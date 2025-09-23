@@ -14,22 +14,24 @@ import {
   Bell,
   Lightbulb,
   Menu,
-  X
+  X,
+  Globe
 } from 'lucide-react'
+import { useLanguage } from '../../contexts/LanguageContext'
 
-const navigation = [
-  { name: 'Tableau de bord', href: '/', icon: Home },
-  { name: 'Mon Profil', href: '/profile', icon: User },
-  { name: 'Emploi du temps', href: '/timetable', icon: Calendar },
-  { name: 'Cours', href: '/courses', icon: BookOpen },
-  { name: 'Devoirs', href: '/homework', icon: FileText },
-  { name: 'Examens & Notes', href: '/exams', icon: GraduationCap },
-  { name: 'Présences', href: '/attendance', icon: Clock },
-  { name: 'Paiements', href: '/payments', icon: CreditCard },
-  { name: 'Messages', href: '/messaging', icon: MessageSquare },
-  { name: 'Soutien scolaire', href: '/tutoring', icon: Users },
-  { name: 'Annonces', href: '/announcements', icon: Bell },
-  { name: 'Améliorations', href: '/suggestions', icon: Lightbulb },
+const getNavigation = (t) => [
+  { name: t('dashboard'), key: 'dashboard', href: '/', icon: Home },
+  { name: t('profile'), key: 'profile', href: '/profile', icon: User },
+  { name: t('timetable'), key: 'timetable', href: '/timetable', icon: Calendar },
+  { name: t('courses'), key: 'courses', href: '/courses', icon: BookOpen },
+  { name: t('homework'), key: 'homework', href: '/homework', icon: FileText },
+  { name: t('exams'), key: 'exams', href: '/exams', icon: GraduationCap },
+  { name: t('attendance'), key: 'attendance', href: '/attendance', icon: Clock },
+  { name: t('payments'), key: 'payments', href: '/payments', icon: CreditCard },
+  { name: t('messaging'), key: 'messaging', href: '/messaging', icon: MessageSquare },
+  { name: t('tutoring'), key: 'tutoring', href: '/tutoring', icon: Users },
+  { name: t('announcements'), key: 'announcements', href: '/announcements', icon: Bell },
+  { name: t('suggestions'), key: 'suggestions', href: '/suggestions', icon: Lightbulb },
 ]
 
 const styles = {
@@ -215,6 +217,25 @@ const styles = {
   pageContent: {
     flex: 1,
     padding: '1rem'
+  },
+  languageToggle: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.5rem',
+    padding: '0.5rem',
+    border: 'none',
+    backgroundColor: 'transparent',
+    cursor: 'pointer',
+    borderRadius: '0.375rem',
+    transition: 'background-color 0.2s'
+  },
+  languageToggleHover: {
+    backgroundColor: '#f3f4f6'
+  },
+  languageText: {
+    fontSize: '0.875rem',
+    fontWeight: '500',
+    color: '#4b5563'
   }
 }
 
@@ -222,6 +243,9 @@ export default function Layout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const location = useLocation()
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024)
+  const { language, toggleLanguage, t } = useLanguage()
+
+  const navigation = getNavigation(t)
 
   // Handle window resize
   useEffect(() => {
@@ -324,10 +348,20 @@ export default function Layout({ children }) {
                 ...styles.greetingText,
                 marginLeft: isDesktop ? 0 : '1rem'
               }}>
-                Bonjour, Christelle MVE ESSONO
+                {t('welcomeMessage')}
               </h2>
             </div>
             <div style={styles.userInfo}>
+              <button
+                onClick={toggleLanguage}
+                style={styles.languageToggle}
+                title={language === 'fr' ? 'Switch to English' : 'Passer au français'}
+              >
+                <Globe style={{ height: '1rem', width: '1rem', color: '#4b5563' }} />
+                <span style={styles.languageText}>
+                  {language === 'fr' ? 'FR' : 'EN'}
+                </span>
+              </button>
               <span style={styles.classInfo}>3ème B</span>
               <div style={styles.avatar}>
                 <span style={styles.avatarText}>CM</span>
