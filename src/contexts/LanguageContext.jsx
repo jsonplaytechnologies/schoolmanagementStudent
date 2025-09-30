@@ -26,6 +26,16 @@ const translations = {
     announcements: 'Annonces',
     suggestions: 'Améliorations',
 
+    // Admin/Professor Navigation
+    myClasses: 'Mes Classes',
+    classes: 'Classes & Cours',
+    students: 'Étudiants',
+    professors: 'Professeurs',
+    schoolYear: 'Année scolaire',
+    reports: 'Rapports & Statistiques',
+    settings: 'Paramètres',
+    childProfile: 'Profil de l\'enfant',
+
     // Common
     welcome: 'Bienvenue',
     class: 'Classe',
@@ -105,6 +115,16 @@ const translations = {
     tutoring: 'Tutoring',
     announcements: 'Announcements',
     suggestions: 'Suggestions',
+
+    // Admin/Professor Navigation
+    myClasses: 'My Classes',
+    classes: 'Classes & Courses',
+    students: 'Students',
+    professors: 'Professors',
+    schoolYear: 'School Year',
+    reports: 'Reports & Statistics',
+    settings: 'Settings',
+    childProfile: 'Child Profile',
 
     // Common
     welcome: 'Welcome',
