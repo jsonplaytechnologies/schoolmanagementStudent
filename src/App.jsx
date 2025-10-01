@@ -21,6 +21,7 @@ import Suggestions from './pages/Suggestions/Suggestions'
 // Professor Pages
 import ProfessorDashboard from './pages/Professor/ProfessorDashboard'
 import ProfessorClasses from './pages/Professor/ProfessorClasses'
+import ProfessorCourses from './pages/Professor/ProfessorCourses'
 import ProfessorHomework from './pages/Professor/ProfessorHomework'
 import ProfessorExams from './pages/Professor/ProfessorExams'
 import ProfessorAttendance from './pages/Professor/ProfessorAttendance'
@@ -78,7 +79,7 @@ function App() {
                 {/* Professor Routes */}
                 <Route path="/professor" element={<ProfessorDashboard />} />
                 <Route path="/professor/classes" element={<ProfessorClasses />} />
-                <Route path="/professor/courses" element={<Courses />} />
+                <Route path="/professor/courses" element={<ProfessorCourses />} />
                 <Route path="/professor/homework" element={<ProfessorHomework />} />
                 <Route path="/professor/exams" element={<ProfessorExams />} />
                 <Route path="/professor/attendance" element={<ProfessorAttendance />} />
