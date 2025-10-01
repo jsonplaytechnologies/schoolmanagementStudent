@@ -34,6 +34,13 @@ import AdminProfessors from './pages/Admin/AdminProfessors'
 import AdminReports from './pages/Admin/AdminReports'
 import AdminSettings from './pages/Admin/AdminSettings'
 
+// Parent Pages
+import ParentDashboard from './pages/Parent/ParentDashboard'
+import ParentHomework from './pages/Parent/ParentHomework'
+import ParentExams from './pages/Parent/ParentExams'
+import ParentAttendance from './pages/Parent/ParentAttendance'
+import ParentPayments from './pages/Parent/ParentPayments'
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -92,15 +99,15 @@ function App() {
                 <Route path="/admin/announcements" element={<Announcements />} />
                 <Route path="/admin/settings" element={<AdminSettings />} />
 
-                {/* Parent Routes - using student components as placeholders */}
-                <Route path="/parent" element={<Dashboard />} />
+                {/* Parent Routes */}
+                <Route path="/parent" element={<ParentDashboard />} />
                 <Route path="/parent/profile" element={<Profile />} />
                 <Route path="/parent/timetable" element={<Timetable />} />
                 <Route path="/parent/courses" element={<Courses />} />
-                <Route path="/parent/homework" element={<Homework />} />
-                <Route path="/parent/exams" element={<Exams />} />
-                <Route path="/parent/attendance" element={<Attendance />} />
-                <Route path="/parent/payments" element={<Payments />} />
+                <Route path="/parent/homework" element={<ParentHomework />} />
+                <Route path="/parent/exams" element={<ParentExams />} />
+                <Route path="/parent/attendance" element={<ParentAttendance />} />
+                <Route path="/parent/payments" element={<ParentPayments />} />
                 <Route path="/parent/messaging" element={<Messaging />} />
                 <Route path="/parent/announcements" element={<Announcements />} />
               </Routes>
