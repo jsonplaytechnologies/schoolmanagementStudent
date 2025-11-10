@@ -27,3 +27,29 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background-color: white;
+  }
+
+  @page {
+    margin: 1.5cm;
+  }
+
+  /* Avoid page breaks inside elements */
+  table, figure, img {
+    page-break-inside: avoid;
+  }
+
+  /* Ensure proper colors in print */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

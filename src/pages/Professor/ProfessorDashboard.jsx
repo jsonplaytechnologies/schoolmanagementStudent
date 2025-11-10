@@ -146,8 +146,8 @@ export default function ProfessorDashboard() {
   const { t, language } = useLanguage()
 
   const todaySchedule = [
-    { time: '08h00–09h00', subject: language === 'fr' ? 'Mathématiques' : 'Mathematics', class: '3ème A', room: 'S205' },
-    { time: '10h00–11h15', subject: language === 'fr' ? 'Physique' : 'Physics', class: '3ème B', room: 'S201' }
+    { time: '08:00–09:00', subject: language === 'fr' ? 'Mathématiques' : 'Mathematics', class: '3ème A', room: 'S205' },
+    { time: '10:00–11:15', subject: language === 'fr' ? 'Physique' : 'Physics', class: '3ème B', room: 'S201' }
   ]
 
   const homeworkToCorrect = [

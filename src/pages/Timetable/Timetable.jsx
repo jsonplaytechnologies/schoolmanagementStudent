@@ -300,6 +300,21 @@ const styles = {
     color: '#6b7280',
     fontSize: '0.875rem',
     textDecoration: 'none'
+  },
+  daySelector: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.5rem'
+  },
+  selectDropdown: {
+    padding: '0.5rem 1rem',
+    border: '1px solid #d1d5db',
+    borderRadius: '0.375rem',
+    backgroundColor: 'white',
+    fontSize: '0.875rem',
+    fontWeight: '500',
+    color: '#374151',
+    cursor: 'pointer'
   }
 }
 
@@ -309,6 +324,7 @@ export default function Timetable() {
   const { t, language } = useLanguage()
   const [currentView, setCurrentView] = useState('weekly')
   const [currentWeek, setCurrentWeek] = useState('08 → 12 sept 2025')
+  const [selectedDay, setSelectedDay] = useState('Mardi')
 
   const weeklySchedule = {
     'Lundi': {
@@ -384,14 +400,16 @@ export default function Timetable() {
 
   const renderWeeklyView = () => (
     <div style={styles.weeklyGrid}>
+      {/* Header row */}
       <div style={styles.timeSlot}></div>
       {days.map(day => (
         <div key={day} style={styles.dayHeader}>{day}</div>
       ))}
 
+      {/* Time slots and classes */}
       {timeSlots.map(time => (
-        <div key={time}>
-          <div style={styles.timeSlot}>{time}</div>
+        <>
+          <div key={`time-${time}`} style={styles.timeSlot}>{time}</div>
           {days.map(day => {
             const dayKey = language === 'fr' ? day :
               day === 'Monday' ? 'Lundi' :
@@ -420,28 +438,51 @@ export default function Timetable() {
               </div>
             )
           })}
-        </div>
+        </>
       ))}
     </div>
   )
 
-  const renderDailyView = () => (
-    <div style={styles.dailyView}>
-      <h3 style={styles.dayTitle}>
-        {language === 'fr' ? 'Mardi 09/09/2025' : 'Tuesday 09/09/2025'}
-      </h3>
-      {dailySchedule.map((item, index) => (
-        <div key={index} style={styles.classItem}>
-          <div style={styles.timeColumn}>{item.time}</div>
-          <div style={styles.subjectColumn}>
-            <div style={styles.subjectName}>{item.subject}</div>
-            <div style={styles.teacherRoom}>{item.teacher} • {item.room}</div>
+  const renderDailyView = () => {
+    // Get schedule for selected day
+    const daySchedule = weeklySchedule[selectedDay] || {}
+    const scheduleItems = timeSlots
+      .filter(time => daySchedule[time])
+      .map(time => ({
+        time: time,
+        ...daySchedule[time]
+      }))
+
+    const displayDay = language === 'fr' ? selectedDay :
+      selectedDay === 'Lundi' ? 'Monday' :
+      selectedDay === 'Mardi' ? 'Tuesday' :
+      selectedDay === 'Mercredi' ? 'Wednesday' :
+      selectedDay === 'Jeudi' ? 'Thursday' : 'Friday'
+
+    return (
+      <div style={styles.dailyView}>
+        <h3 style={styles.dayTitle}>
+          {displayDay} 09/09/2025
+        </h3>
+        {scheduleItems.length > 0 ? scheduleItems.map((item, index) => (
+          <div key={index} style={styles.classItem}>
+            <div style={styles.timeColumn}>{item.time}</div>
+            <div style={styles.subjectColumn}>
+              <div style={styles.subjectName}>{item.subject}</div>
+              <div style={styles.teacherRoom}>{item.teacher} • {item.room}</div>
+            </div>
+            <div style={styles.remarksColumn}>
+              {language === 'fr' ? 'Notes de cours' : 'Class notes'}
+            </div>
           </div>
-          <div style={styles.remarksColumn}>{item.remarks}</div>
-        </div>
-      ))}
-    </div>
-  )
+        )) : (
+          <div style={{ textAlign: 'center', padding: '2rem', color: '#6b7280' }}>
+            {language === 'fr' ? 'Aucun cours ce jour' : 'No classes this day'}
+          </div>
+        )}
+      </div>
+    )
+  }
 
   const renderMonthlyView = () => (
     <>
@@ -522,6 +563,23 @@ export default function Timetable() {
             <button style={styles.navButton}>
               <ArrowRight style={{ height: '1rem', width: '1rem' }} />
             </button>
+          </div>
+        )}
+
+        {currentView === 'daily' && (
+          <div style={styles.daySelector}>
+            <Filter style={{ height: '1rem', width: '1rem', color: '#6b7280' }} />
+            <select
+              value={selectedDay}
+              onChange={(e) => setSelectedDay(e.target.value)}
+              style={styles.selectDropdown}
+            >
+              <option value="Lundi">{language === 'fr' ? 'Lundi' : 'Monday'}</option>
+              <option value="Mardi">{language === 'fr' ? 'Mardi' : 'Tuesday'}</option>
+              <option value="Mercredi">{language === 'fr' ? 'Mercredi' : 'Wednesday'}</option>
+              <option value="Jeudi">{language === 'fr' ? 'Jeudi' : 'Thursday'}</option>
+              <option value="Vendredi">{language === 'fr' ? 'Vendredi' : 'Friday'}</option>
+            </select>
           </div>
         )}
 

@@ -587,7 +587,7 @@ export default function Dashboard() {
               {language === 'fr' ? 'Anglais' : 'English'}
             </div>
             <div style={styles.tutoringTime}>
-              14 {language === 'fr' ? 'sept' : 'Sept'}, 16h00-18h00
+              14 {language === 'fr' ? 'sept' : 'Sept'}, 16:00-18:00
             </div>
             <div style={styles.tutoringDetails}>
               {language === 'fr' ? 'En attente confirmation' : 'Awaiting confirmation'}

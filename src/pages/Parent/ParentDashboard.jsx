@@ -155,8 +155,8 @@ export default function ParentDashboard() {
   }
 
   const todaySchedule = [
-    { time: '08h00–09h00', subject: language === 'fr' ? 'Mathématiques' : 'Mathematics', room: 'S205', professor: 'M. OBIANG' },
-    { time: '10h00–11h15', subject: language === 'fr' ? 'Français' : 'French', room: 'S301', professor: 'Mme ESSONO' }
+    { time: '08:00–09:00', subject: language === 'fr' ? 'Mathématiques' : 'Mathematics', room: 'S205', professor: 'M. OBIANG' },
+    { time: '10:00–11:15', subject: language === 'fr' ? 'Français' : 'French', room: 'S301', professor: 'Mme ESSONO' }
   ]
 
   const upcomingHomework = [

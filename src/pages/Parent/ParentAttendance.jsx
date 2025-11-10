@@ -102,12 +102,12 @@ export default function ParentAttendance() {
   }
 
   const recentAttendance = [
-    { date: '10/09/2025', status: 'present', course: language === 'fr' ? 'Mathématiques' : 'Mathematics', time: '08h00' },
-    { date: '10/09/2025', status: 'present', course: language === 'fr' ? 'Français' : 'French', time: '10h00' },
-    { date: '09/09/2025', status: 'present', course: language === 'fr' ? 'Physique' : 'Physics', time: '08h00' },
-    { date: '09/09/2025', status: 'late', course: language === 'fr' ? 'Anglais' : 'English', time: '14h00' },
-    { date: '08/09/2025', status: 'present', course: language === 'fr' ? 'Histoire-Géo' : 'History-Geography', time: '10h00' },
-    { date: '05/09/2025', status: 'absent', course: language === 'fr' ? 'Mathématiques' : 'Mathematics', time: '08h00', justified: false }
+    { date: '10/09/2025', status: 'present', course: language === 'fr' ? 'Mathématiques' : 'Mathematics', time: '08:00' },
+    { date: '10/09/2025', status: 'present', course: language === 'fr' ? 'Français' : 'French', time: '10:00' },
+    { date: '09/09/2025', status: 'present', course: language === 'fr' ? 'Physique' : 'Physics', time: '08:00' },
+    { date: '09/09/2025', status: 'late', course: language === 'fr' ? 'Anglais' : 'English', time: '14:00' },
+    { date: '08/09/2025', status: 'present', course: language === 'fr' ? 'Histoire-Géo' : 'History-Geography', time: '10:00' },
+    { date: '05/09/2025', status: 'absent', course: language === 'fr' ? 'Mathématiques' : 'Mathematics', time: '08:00', justified: false }
   ]
 
   const getStatusBadge = (status, justified) => {

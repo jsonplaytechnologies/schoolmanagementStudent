@@ -17,6 +17,7 @@ import Messaging from './pages/Messaging/Messaging'
 import Tutoring from './pages/Tutoring/Tutoring'
 import Announcements from './pages/Announcements/Announcements'
 import Suggestions from './pages/Suggestions/Suggestions'
+import Reports from './pages/Reports/Reports'
 
 // Professor Pages
 import ProfessorDashboard from './pages/Professor/ProfessorDashboard'
@@ -75,6 +76,7 @@ function App() {
                 <Route path="/student/tutoring" element={<Tutoring />} />
                 <Route path="/student/announcements" element={<Announcements />} />
                 <Route path="/student/suggestions" element={<Suggestions />} />
+                <Route path="/student/reports" element={<Reports />} />
 
                 {/* Professor Routes */}
                 <Route path="/professor" element={<ProfessorDashboard />} />
@@ -111,6 +113,7 @@ function App() {
                 <Route path="/parent/payments" element={<ParentPayments />} />
                 <Route path="/parent/messaging" element={<Messaging />} />
                 <Route path="/parent/announcements" element={<Announcements />} />
+                <Route path="/parent/reports" element={<Reports />} />
               </Routes>
             </Layout>
           </Router>

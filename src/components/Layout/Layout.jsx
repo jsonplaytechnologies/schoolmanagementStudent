@@ -39,6 +39,7 @@ const getStudentNavigation = (t) => [
   { name: t('tutoring'), key: 'tutoring', href: '/student/tutoring', icon: Users },
   { name: t('announcements'), key: 'announcements', href: '/student/announcements', icon: Bell },
   { name: t('suggestions'), key: 'suggestions', href: '/student/suggestions', icon: Lightbulb },
+  { name: t('reports'), key: 'reports', href: '/student/reports', icon: BarChart3 },
 ]
 
 // Professor Navigation
@@ -81,6 +82,7 @@ const getParentNavigation = (t) => [
   { name: t('payments'), key: 'payments', href: '/parent/payments', icon: CreditCard },
   { name: t('messaging'), key: 'messaging', href: '/parent/messaging', icon: MessageSquare },
   { name: t('announcements'), key: 'announcements', href: '/parent/announcements', icon: Bell },
+  { name: t('reports'), key: 'reports', href: '/parent/reports', icon: BarChart3 },
 ]
 
 const getNavigation = (role, t) => {

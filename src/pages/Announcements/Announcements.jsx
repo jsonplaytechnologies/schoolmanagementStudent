@@ -121,8 +121,8 @@ export default function Announcements() {
         id: 1,
         title: language === 'fr' ? 'Réunion Parents-Professeurs' : 'Parent-Teacher Meeting',
         content: language === 'fr'
-          ? 'La réunion parents-professeurs du 1er trimestre aura lieu le 20 septembre 2025 de 15h00 à 18h00. Merci de confirmer votre présence auprès du secrétariat.'
-          : 'The first term parent-teacher meeting will take place on September 20, 2025 from 3:00 PM to 6:00 PM. Please confirm your attendance with the office.',
+          ? 'La réunion parents-professeurs du 1er trimestre aura lieu le 20 septembre 2025 de 15:00 à 18:00. Merci de confirmer votre présence auprès du secrétariat.'
+          : 'The first term parent-teacher meeting will take place on September 20, 2025 from 15:00 to 18:00. Please confirm your attendance with the office.',
         author: language === 'fr' ? 'Administration' : 'Administration',
         date: '15/09/2025',
         category: language === 'fr' ? 'Événement' : 'Event',
@@ -171,8 +171,8 @@ export default function Announcements() {
         id: 1,
         title: language === 'fr' ? 'Réunion Parents-Professeurs' : 'Parent-Teacher Meeting',
         content: language === 'fr'
-          ? 'La réunion parents-professeurs du 1er trimestre aura lieu le 20 septembre 2025 de 15h00 à 18h00.'
-          : 'The first term parent-teacher meeting will take place on September 20, 2025 from 3:00 PM to 6:00 PM.',
+          ? 'La réunion parents-professeurs du 1er trimestre aura lieu le 20 septembre 2025 de 15:00 à 18:00.'
+          : 'The first term parent-teacher meeting will take place on September 20, 2025 from 15:00 to 18:00.',
         author: language === 'fr' ? 'Administration' : 'Administration',
         date: '15/09/2025',
         category: language === 'fr' ? 'Événement' : 'Event',
