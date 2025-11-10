@@ -33,6 +33,7 @@ const translations = {
     professors: 'Professeurs',
     schoolYear: 'Année scolaire',
     reports: 'Rapports & Statistiques',
+    report: 'Rapports',
     settings: 'Paramètres',
     childProfile: 'Profil de l\'enfant',
 
@@ -123,6 +124,7 @@ const translations = {
     professors: 'Professors',
     schoolYear: 'School Year',
     reports: 'Reports & Statistics',
+    report: 'Reports',
     settings: 'Settings',
     childProfile: 'Child Profile',
 

@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import { useLanguage } from '../../contexts/LanguageContext'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, Download, Printer, Calendar, TrendingUp, Clock, Award, FileText } from 'lucide-react'
+import {
+  ArrowLeft, Download, Printer, TrendingUp, Clock,
+  FileText, Award, DollarSign, Users, BarChart3, Calendar
+} from 'lucide-react'
 
 const styles = {
   container: {
@@ -39,48 +42,73 @@ const styles = {
     fontSize: '0.875rem',
     textDecoration: 'none'
   },
-  controls: {
+  controlsCard: {
     backgroundColor: 'white',
     borderRadius: '0.5rem',
     boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
-    padding: '1.5rem',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    gap: '1rem'
+    padding: '1.5rem'
+  },
+  controlsGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+    gap: '1rem',
+    marginBottom: '1.5rem'
   },
   filterGroup: {
     display: 'flex',
-    gap: '1rem',
-    alignItems: 'center',
-    flexWrap: 'wrap'
+    flexDirection: 'column',
+    gap: '0.5rem'
   },
-  filterLabel: {
+  label: {
     fontSize: '0.875rem',
-    fontWeight: '500',
-    color: '#374151',
-    marginRight: '0.5rem'
+    fontWeight: '600',
+    color: '#374151'
   },
   select: {
-    padding: '0.5rem 1rem',
+    padding: '0.625rem',
     border: '1px solid #d1d5db',
     borderRadius: '0.375rem',
     backgroundColor: 'white',
     fontSize: '0.875rem',
-    fontWeight: '500',
     color: '#374151',
     cursor: 'pointer'
   },
-  actionButtons: {
+  reportTypesGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+    gap: '0.75rem',
+    marginBottom: '1rem'
+  },
+  reportTypeButton: {
+    padding: '0.75rem 1rem',
+    border: '2px solid #e5e7eb',
+    borderRadius: '0.5rem',
+    backgroundColor: 'white',
+    cursor: 'pointer',
+    fontSize: '0.875rem',
+    fontWeight: '500',
+    color: '#6b7280',
     display: 'flex',
-    gap: '0.5rem'
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '0.5rem',
+    transition: 'all 0.2s'
+  },
+  activeReportType: {
+    backgroundColor: '#3b82f6',
+    color: 'white',
+    borderColor: '#3b82f6'
+  },
+  actions: {
+    display: 'flex',
+    gap: '0.75rem',
+    justifyContent: 'flex-end'
   },
   button: {
     display: 'flex',
     alignItems: 'center',
     gap: '0.5rem',
-    padding: '0.5rem 1rem',
+    padding: '0.625rem 1.25rem',
     borderRadius: '0.375rem',
     fontSize: '0.875rem',
     fontWeight: '500',
@@ -101,90 +129,47 @@ const styles = {
     boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
     padding: '2rem'
   },
-  reportHeader: {
-    textAlign: 'center',
-    marginBottom: '2rem',
-    paddingBottom: '1.5rem',
-    borderBottom: '2px solid #e5e7eb'
-  },
-  schoolName: {
-    fontSize: '1.5rem',
-    fontWeight: '700',
-    color: '#111827',
-    marginBottom: '0.5rem'
-  },
   reportTitle: {
     fontSize: '1.25rem',
-    fontWeight: '600',
-    color: '#3b82f6',
-    marginBottom: '1rem'
-  },
-  studentInfo: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-    gap: '1rem',
-    marginBottom: '2rem',
-    padding: '1rem',
-    backgroundColor: '#f9fafb',
-    borderRadius: '0.5rem'
-  },
-  infoItem: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.25rem'
-  },
-  infoLabel: {
-    fontSize: '0.75rem',
-    fontWeight: '500',
-    color: '#6b7280',
-    textTransform: 'uppercase'
-  },
-  infoValue: {
-    fontSize: '0.875rem',
-    fontWeight: '600',
-    color: '#111827'
-  },
-  section: {
-    marginBottom: '2rem'
-  },
-  sectionTitle: {
-    fontSize: '1.125rem',
-    fontWeight: '600',
+    fontWeight: '700',
     color: '#111827',
-    marginBottom: '1rem',
+    marginBottom: '1.5rem',
     display: 'flex',
     alignItems: 'center',
-    gap: '0.5rem',
-    paddingBottom: '0.5rem',
-    borderBottom: '1px solid #e5e7eb'
+    gap: '0.75rem'
   },
   statsGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
     gap: '1rem',
-    marginBottom: '1.5rem'
+    marginBottom: '2rem'
   },
-  statBox: {
-    padding: '1rem',
+  statCard: {
+    padding: '1.25rem',
     borderRadius: '0.5rem',
     border: '1px solid #e5e7eb',
-    textAlign: 'center'
+    backgroundColor: '#f9fafb'
   },
   statLabel: {
     fontSize: '0.75rem',
     fontWeight: '500',
     color: '#6b7280',
-    marginBottom: '0.5rem'
+    marginBottom: '0.5rem',
+    textTransform: 'uppercase'
   },
   statValue: {
-    fontSize: '1.5rem',
+    fontSize: '1.75rem',
     fontWeight: '700',
     color: '#111827'
   },
+  statSubtext: {
+    fontSize: '0.75rem',
+    color: '#6b7280',
+    marginTop: '0.25rem'
+  },
   table: {
     width: '100%',
-    borderCollapse: 'collapse',
-    marginBottom: '1rem'
+    borderCollapse: 'collapse'
   },
   th: {
     textAlign: 'left',
@@ -201,227 +186,609 @@ const styles = {
     color: '#374151',
     borderBottom: '1px solid #f3f4f6'
   },
-  tdCenter: {
-    textAlign: 'center'
-  },
-  gradeGood: {
-    color: '#059669',
-    fontWeight: '600'
-  },
-  gradeAverage: {
-    color: '#d97706',
-    fontWeight: '600'
-  },
-  gradePoor: {
-    color: '#dc2626',
-    fontWeight: '600'
-  },
-  summary: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-    gap: '1rem',
-    padding: '1rem',
-    backgroundColor: '#f0f9ff',
-    borderRadius: '0.5rem',
-    border: '2px solid #3b82f6'
-  },
-  summaryItem: {
-    textAlign: 'center'
-  },
-  summaryLabel: {
-    fontSize: '0.875rem',
-    fontWeight: '500',
-    color: '#1e40af',
-    marginBottom: '0.5rem'
-  },
-  summaryValue: {
-    fontSize: '1.75rem',
-    fontWeight: '700',
-    color: '#1e3a8a'
-  },
-  footer: {
-    marginTop: '2rem',
-    paddingTop: '1rem',
-    borderTop: '2px solid #e5e7eb',
-    display: 'flex',
-    justifyContent: 'space-between',
+  badge: {
+    display: 'inline-block',
+    padding: '0.25rem 0.75rem',
+    borderRadius: '9999px',
     fontSize: '0.75rem',
-    color: '#6b7280'
+    fontWeight: '500'
   },
-  signature: {
-    marginTop: '3rem',
-    display: 'grid',
-    gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: '2rem'
+  badgeGreen: {
+    backgroundColor: '#d1fae5',
+    color: '#065f46'
   },
-  signatureBox: {
-    textAlign: 'center'
+  badgeYellow: {
+    backgroundColor: '#fef3c7',
+    color: '#92400e'
   },
-  signatureLine: {
-    borderTop: '1px solid #374151',
-    marginTop: '3rem',
-    paddingTop: '0.5rem',
-    fontSize: '0.875rem',
-    color: '#6b7280'
+  badgeRed: {
+    backgroundColor: '#fee2e2',
+    color: '#991b1b'
   },
-  // Print styles
-  '@media print': {
-    noPrint: {
-      display: 'none'
-    }
+  badgeBlue: {
+    backgroundColor: '#dbeafe',
+    color: '#1e40af'
+  },
+  chart: {
+    padding: '1.5rem',
+    backgroundColor: '#f9fafb',
+    borderRadius: '0.5rem',
+    border: '1px solid #e5e7eb'
   }
 }
 
 export default function Reports() {
   const { t, language } = useLanguage()
-  const [selectedPeriod, setSelectedPeriod] = useState('trimester1')
-  const [selectedYear, setSelectedYear] = useState('2025-2026')
+  const [reportType, setReportType] = useState('academic')
+  const [period, setPeriod] = useState('trimester1')
+  const [year, setYear] = useState('2025-2026')
+  const [subject, setSubject] = useState('all')
 
-  const studentInfo = {
-    name: 'Christelle MVE ESSONO',
-    studentId: '2025-327',
-    class: '3ème B',
-    academicYear: '2025-2026'
-  }
-
-  // Grade data
-  const grades = [
-    {
-      subject: language === 'fr' ? 'Mathématiques' : 'Mathematics',
-      test1: 14.5,
-      test2: 13.0,
-      homework: 15.0,
-      exam: 14.0,
-      average: 14.1,
-      coefficient: 4
-    },
-    {
-      subject: language === 'fr' ? 'Français' : 'French',
-      test1: 13.0,
-      test2: 14.5,
-      homework: 13.5,
-      exam: 13.5,
-      average: 13.6,
-      coefficient: 4
-    },
-    {
-      subject: language === 'fr' ? 'Physique' : 'Physics',
-      test1: 13.0,
-      test2: 12.5,
-      homework: 14.0,
-      exam: 13.0,
-      average: 13.1,
-      coefficient: 3
-    },
-    {
-      subject: language === 'fr' ? 'Anglais' : 'English',
-      test1: 15.0,
-      test2: 14.0,
-      homework: 15.5,
-      exam: 15.0,
-      average: 14.9,
-      coefficient: 3
-    },
-    {
-      subject: language === 'fr' ? 'Histoire-Géographie' : 'History-Geography',
-      test1: 12.0,
-      test2: 13.5,
-      homework: 12.5,
-      exam: 12.5,
-      average: 12.6,
-      coefficient: 2
-    },
-    {
-      subject: language === 'fr' ? 'Biologie' : 'Biology',
-      test1: 14.0,
-      test2: 13.5,
-      homework: 14.5,
-      exam: 14.0,
-      average: 14.0,
-      coefficient: 2
-    },
-    {
-      subject: language === 'fr' ? 'Education Civique' : 'Civic Education',
-      test1: 15.0,
-      test2: 14.5,
-      homework: 15.0,
-      exam: 15.0,
-      average: 14.9,
-      coefficient: 1
-    },
-    {
-      subject: language === 'fr' ? 'EPS' : 'Physical Education',
-      test1: 16.0,
-      test2: 15.5,
-      homework: 16.0,
-      exam: 16.0,
-      average: 15.9,
-      coefficient: 1
-    }
+  const reportTypes = [
+    { id: 'academic', icon: TrendingUp, label: language === 'fr' ? 'Académique' : 'Academic' },
+    { id: 'attendance', icon: Clock, label: language === 'fr' ? 'Assiduité' : 'Attendance' },
+    { id: 'progress', icon: BarChart3, label: language === 'fr' ? 'Progrès' : 'Progress' },
+    { id: 'homework', icon: FileText, label: language === 'fr' ? 'Devoirs' : 'Homework' },
+    { id: 'exams', icon: Award, label: language === 'fr' ? 'Examens' : 'Exams' },
+    { id: 'financial', icon: DollarSign, label: language === 'fr' ? 'Financier' : 'Financial' },
+    { id: 'activities', icon: Users, label: language === 'fr' ? 'Activités' : 'Activities' },
+    { id: 'comprehensive', icon: Calendar, label: language === 'fr' ? 'Complet' : 'Comprehensive' }
   ]
 
-  // Attendance data
-  const attendanceStats = {
-    totalDays: 60,
-    present: 57,
-    absent: 2,
-    late: 1,
-    justified: 2,
-    unjustified: 0
-  }
-
-  // Calculate overall average
-  const calculateOverallAverage = () => {
-    const totalPoints = grades.reduce((sum, grade) => sum + (grade.average * grade.coefficient), 0)
-    const totalCoefficient = grades.reduce((sum, grade) => sum + grade.coefficient, 0)
-    return (totalPoints / totalCoefficient).toFixed(2)
-  }
-
-  const getGradeStyle = (grade) => {
-    if (grade >= 14) return styles.gradeGood
-    if (grade >= 10) return styles.gradeAverage
-    return styles.gradePoor
-  }
+  const subjects = [
+    { id: 'all', label: language === 'fr' ? 'Toutes les matières' : 'All subjects' },
+    { id: 'math', label: language === 'fr' ? 'Mathématiques' : 'Mathematics' },
+    { id: 'french', label: language === 'fr' ? 'Français' : 'French' },
+    { id: 'physics', label: language === 'fr' ? 'Physique' : 'Physics' },
+    { id: 'english', label: language === 'fr' ? 'Anglais' : 'English' },
+    { id: 'history', label: language === 'fr' ? 'Histoire-Géo' : 'History-Geography' }
+  ]
 
   const handlePrint = () => {
     window.print()
   }
 
-  const handleDownloadPDF = () => {
-    // In a real application, you would use a library like jsPDF or html2pdf
-    alert(language === 'fr' ? 'Fonction PDF à implémenter' : 'PDF function to be implemented')
-  }
+  const renderAcademicReport = () => (
+    <div>
+      <div style={styles.reportTitle}>
+        <TrendingUp size={24} />
+        {language === 'fr' ? 'Rapport Académique' : 'Academic Report'}
+      </div>
 
-  const getPeriodLabel = (period) => {
-    if (language === 'fr') {
-      switch(period) {
-        case 'trimester1': return '1er Trimestre'
-        case 'trimester2': return '2ème Trimestre'
-        case 'trimester3': return '3ème Trimestre'
-        case 'year': return 'Année Complète'
-        default: return period
-      }
-    } else {
-      switch(period) {
-        case 'trimester1': return '1st Trimester'
-        case 'trimester2': return '2nd Trimester'
-        case 'trimester3': return '3rd Trimester'
-        case 'year': return 'Full Year'
-        default: return period
-      }
+      <div style={styles.statsGrid}>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Moyenne Générale' : 'Overall Average'}</div>
+          <div style={styles.statValue}>14.2/20</div>
+          <div style={styles.statSubtext}>{language === 'fr' ? 'Rang: 5/35' : 'Rank: 5/35'}</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Meilleure Matière' : 'Best Subject'}</div>
+          <div style={styles.statValue}>15.9</div>
+          <div style={styles.statSubtext}>{language === 'fr' ? 'EPS' : 'Physical Ed.'}</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'À Améliorer' : 'Needs Improvement'}</div>
+          <div style={styles.statValue}>12.6</div>
+          <div style={styles.statSubtext}>{language === 'fr' ? 'Histoire-Géo' : 'History-Geo'}</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Mention' : 'Honors'}</div>
+          <div style={styles.statValue}>{language === 'fr' ? 'Bien' : 'Good'}</div>
+          <div style={styles.statSubtext}>≥ 14/20</div>
+        </div>
+      </div>
+
+      <table style={styles.table}>
+        <thead>
+          <tr>
+            <th style={styles.th}>{language === 'fr' ? 'Matière' : 'Subject'}</th>
+            <th style={styles.th}>{language === 'fr' ? 'Moyenne' : 'Average'}</th>
+            <th style={styles.th}>{language === 'fr' ? 'Coef.' : 'Coef.'}</th>
+            <th style={styles.th}>{language === 'fr' ? 'Tendance' : 'Trend'}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {[
+            { subject: language === 'fr' ? 'Mathématiques' : 'Mathematics', avg: 14.1, coef: 4, trend: 'up' },
+            { subject: language === 'fr' ? 'Français' : 'French', avg: 13.6, coef: 4, trend: 'stable' },
+            { subject: language === 'fr' ? 'Physique' : 'Physics', avg: 13.1, coef: 3, trend: 'up' },
+            { subject: language === 'fr' ? 'Anglais' : 'English', avg: 14.9, coef: 3, trend: 'up' },
+            { subject: language === 'fr' ? 'Histoire-Géo' : 'History-Geography', avg: 12.6, coef: 2, trend: 'down' }
+          ].map((item, idx) => (
+            <tr key={idx}>
+              <td style={styles.td}>{item.subject}</td>
+              <td style={styles.td}><strong>{item.avg}/20</strong></td>
+              <td style={styles.td}>{item.coef}</td>
+              <td style={styles.td}>
+                <span style={{
+                  ...styles.badge,
+                  ...(item.trend === 'up' ? styles.badgeGreen : item.trend === 'down' ? styles.badgeRed : styles.badgeYellow)
+                }}>
+                  {item.trend === 'up' ? '↑' : item.trend === 'down' ? '↓' : '→'}
+                  {item.trend === 'up' ? (language === 'fr' ? ' En hausse' : ' Improving') :
+                   item.trend === 'down' ? (language === 'fr' ? ' En baisse' : ' Declining') :
+                   (language === 'fr' ? ' Stable' : ' Stable')}
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+
+  const renderAttendanceReport = () => (
+    <div>
+      <div style={styles.reportTitle}>
+        <Clock size={24} />
+        {language === 'fr' ? 'Rapport d\'Assiduité' : 'Attendance Report'}
+      </div>
+
+      <div style={styles.statsGrid}>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Taux de Présence' : 'Attendance Rate'}</div>
+          <div style={{...styles.statValue, color: '#059669'}}>95.0%</div>
+          <div style={styles.statSubtext}>57/60 {language === 'fr' ? 'jours' : 'days'}</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Absences' : 'Absences'}</div>
+          <div style={{...styles.statValue, color: '#dc2626'}}>2</div>
+          <div style={styles.statSubtext}>{language === 'fr' ? 'Toutes justifiées' : 'All justified'}</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Retards' : 'Late Arrivals'}</div>
+          <div style={{...styles.statValue, color: '#d97706'}}>1</div>
+          <div style={styles.statSubtext}>{language === 'fr' ? '< 10 minutes' : '< 10 minutes'}</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Comparaison Classe' : 'Class Comparison'}</div>
+          <div style={{...styles.statValue, color: '#059669'}}>+3.2%</div>
+          <div style={styles.statSubtext}>{language === 'fr' ? 'Au-dessus moyenne' : 'Above average'}</div>
+        </div>
+      </div>
+
+      <div style={styles.chart}>
+        <div style={{ fontSize: '0.875rem', fontWeight: '600', color: '#374151', marginBottom: '1rem' }}>
+          {language === 'fr' ? 'Historique mensuel' : 'Monthly History'}
+        </div>
+        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-end', height: '150px' }}>
+          {['Sept', 'Oct', 'Nov', 'Dec'].map((month, idx) => {
+            const heights = [90, 95, 93, 97]
+            return (
+              <div key={idx} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#3b82f6' }}>{heights[idx]}%</div>
+                <div style={{
+                  width: '100%',
+                  backgroundColor: '#3b82f6',
+                  height: `${heights[idx]}%`,
+                  borderRadius: '0.25rem 0.25rem 0 0'
+                }} />
+                <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>{month}</div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </div>
+  )
+
+  const renderProgressReport = () => (
+    <div>
+      <div style={styles.reportTitle}>
+        <BarChart3 size={24} />
+        {language === 'fr' ? 'Rapport de Progrès' : 'Progress Report'}
+      </div>
+
+      <div style={styles.statsGrid}>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Évolution Générale' : 'Overall Progress'}</div>
+          <div style={{...styles.statValue, color: '#059669'}}>+1.3</div>
+          <div style={styles.statSubtext}>{language === 'fr' ? 'vs trimestre précédent' : 'vs previous term'}</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Matières Améliorées' : 'Improved Subjects'}</div>
+          <div style={styles.statValue}>5/8</div>
+          <div style={styles.statSubtext}>62.5%</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Plus Forte Hausse' : 'Best Improvement'}</div>
+          <div style={styles.statValue}>+2.1</div>
+          <div style={styles.statSubtext}>{language === 'fr' ? 'Physique' : 'Physics'}</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Objectif Suivant' : 'Next Goal'}</div>
+          <div style={styles.statValue}>15.0</div>
+          <div style={styles.statSubtext}>{language === 'fr' ? 'Mention Bien' : 'Good Honors'}</div>
+        </div>
+      </div>
+
+      <table style={styles.table}>
+        <thead>
+          <tr>
+            <th style={styles.th}>{language === 'fr' ? 'Matière' : 'Subject'}</th>
+            <th style={styles.th}>T1</th>
+            <th style={styles.th}>T2</th>
+            <th style={styles.th}>T3</th>
+            <th style={styles.th}>{language === 'fr' ? 'Évolution' : 'Change'}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {[
+            { subject: language === 'fr' ? 'Mathématiques' : 'Mathematics', t1: 13.2, t2: 13.8, t3: 14.1, change: '+0.9' },
+            { subject: language === 'fr' ? 'Français' : 'French', t1: 13.5, t2: 13.7, t3: 13.6, change: '+0.1' },
+            { subject: language === 'fr' ? 'Physique' : 'Physics', t1: 11.0, t2: 12.1, t3: 13.1, change: '+2.1' }
+          ].map((item, idx) => (
+            <tr key={idx}>
+              <td style={styles.td}>{item.subject}</td>
+              <td style={styles.td}>{item.t1}</td>
+              <td style={styles.td}>{item.t2}</td>
+              <td style={styles.td}><strong>{item.t3}</strong></td>
+              <td style={styles.td}>
+                <span style={{...styles.badge, ...styles.badgeGreen}}>{item.change}</span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+
+  const renderHomeworkReport = () => (
+    <div>
+      <div style={styles.reportTitle}>
+        <FileText size={24} />
+        {language === 'fr' ? 'Rapport des Devoirs' : 'Homework Report'}
+      </div>
+
+      <div style={styles.statsGrid}>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Taux de Soumission' : 'Submission Rate'}</div>
+          <div style={{...styles.statValue, color: '#059669'}}>92%</div>
+          <div style={styles.statSubtext}>23/25 {language === 'fr' ? 'devoirs' : 'assignments'}</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Moyenne Devoirs' : 'Homework Average'}</div>
+          <div style={styles.statValue}>14.5/20</div>
+          <div style={styles.statSubtext}>{language === 'fr' ? 'Excellent' : 'Excellent'}</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'À Temps' : 'On Time'}</div>
+          <div style={{...styles.statValue, color: '#059669'}}>21/23</div>
+          <div style={styles.statSubtext}>91%</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Devoirs Manquants' : 'Missing'}</div>
+          <div style={{...styles.statValue, color: '#dc2626'}}>2</div>
+          <div style={styles.statSubtext}>{language === 'fr' ? 'À rattraper' : 'To complete'}</div>
+        </div>
+      </div>
+
+      <table style={styles.table}>
+        <thead>
+          <tr>
+            <th style={styles.th}>{language === 'fr' ? 'Matière' : 'Subject'}</th>
+            <th style={styles.th}>{language === 'fr' ? 'Rendus' : 'Submitted'}</th>
+            <th style={styles.th}>{language === 'fr' ? 'Moyenne' : 'Average'}</th>
+            <th style={styles.th}>{language === 'fr' ? 'Statut' : 'Status'}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {[
+            { subject: language === 'fr' ? 'Mathématiques' : 'Mathematics', submitted: '5/5', avg: 15.0, status: 'excellent' },
+            { subject: language === 'fr' ? 'Français' : 'French', submitted: '4/5', avg: 13.5, status: 'good' },
+            { subject: language === 'fr' ? 'Physique' : 'Physics', submitted: '5/5', avg: 14.0, status: 'excellent' }
+          ].map((item, idx) => (
+            <tr key={idx}>
+              <td style={styles.td}>{item.subject}</td>
+              <td style={styles.td}>{item.submitted}</td>
+              <td style={styles.td}><strong>{item.avg}/20</strong></td>
+              <td style={styles.td}>
+                <span style={{
+                  ...styles.badge,
+                  ...(item.status === 'excellent' ? styles.badgeGreen : styles.badgeYellow)
+                }}>
+                  {item.status === 'excellent' ?
+                    (language === 'fr' ? 'Excellent' : 'Excellent') :
+                    (language === 'fr' ? 'Bon' : 'Good')}
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+
+  const renderExamsReport = () => (
+    <div>
+      <div style={styles.reportTitle}>
+        <Award size={24} />
+        {language === 'fr' ? 'Rapport des Examens' : 'Exams Report'}
+      </div>
+
+      <div style={styles.statsGrid}>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Moyenne Examens' : 'Exam Average'}</div>
+          <div style={styles.statValue}>13.9/20</div>
+          <div style={styles.statSubtext}>8 {language === 'fr' ? 'examens' : 'exams'}</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Meilleur Résultat' : 'Best Result'}</div>
+          <div style={{...styles.statValue, color: '#059669'}}>16.0/20</div>
+          <div style={styles.statSubtext}>{language === 'fr' ? 'Anglais' : 'English'}</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Taux de Réussite' : 'Pass Rate'}</div>
+          <div style={{...styles.statValue, color: '#059669'}}>100%</div>
+          <div style={styles.statSubtext}>8/8 {language === 'fr' ? 'réussis' : 'passed'}</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'vs Contrôles' : 'vs Tests'}</div>
+          <div style={{...styles.statValue, color: '#d97706'}}>-0.3</div>
+          <div style={styles.statSubtext}>{language === 'fr' ? 'Légèrement inférieur' : 'Slightly lower'}</div>
+        </div>
+      </div>
+
+      <table style={styles.table}>
+        <thead>
+          <tr>
+            <th style={styles.th}>{language === 'fr' ? 'Matière' : 'Subject'}</th>
+            <th style={styles.th}>{language === 'fr' ? 'Note Examen' : 'Exam Grade'}</th>
+            <th style={styles.th}>{language === 'fr' ? 'Moy. Classe' : 'Class Avg'}</th>
+            <th style={styles.th}>{language === 'fr' ? 'Performance' : 'Performance'}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {[
+            { subject: language === 'fr' ? 'Mathématiques' : 'Mathematics', grade: 14.0, classAvg: 12.5, perf: 'above' },
+            { subject: language === 'fr' ? 'Français' : 'French', grade: 13.5, classAvg: 13.2, perf: 'average' },
+            { subject: language === 'fr' ? 'Anglais' : 'English', grade: 16.0, classAvg: 13.8, perf: 'above' }
+          ].map((item, idx) => (
+            <tr key={idx}>
+              <td style={styles.td}>{item.subject}</td>
+              <td style={styles.td}><strong>{item.grade}/20</strong></td>
+              <td style={styles.td}>{item.classAvg}/20</td>
+              <td style={styles.td}>
+                <span style={{
+                  ...styles.badge,
+                  ...(item.perf === 'above' ? styles.badgeGreen : styles.badgeYellow)
+                }}>
+                  {item.perf === 'above' ?
+                    (language === 'fr' ? 'Au-dessus' : 'Above') :
+                    (language === 'fr' ? 'Moyen' : 'Average')}
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+
+  const renderFinancialReport = () => (
+    <div>
+      <div style={styles.reportTitle}>
+        <DollarSign size={24} />
+        {language === 'fr' ? 'Rapport Financier' : 'Financial Report'}
+      </div>
+
+      <div style={styles.statsGrid}>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Frais Annuels' : 'Annual Fees'}</div>
+          <div style={styles.statValue}>1,200€</div>
+          <div style={styles.statSubtext}>{language === 'fr' ? 'Total' : 'Total'}</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Payé' : 'Paid'}</div>
+          <div style={{...styles.statValue, color: '#059669'}}>800€</div>
+          <div style={styles.statSubtext}>66.7%</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Restant' : 'Remaining'}</div>
+          <div style={{...styles.statValue, color: '#d97706'}}>400€</div>
+          <div style={styles.statSubtext}>33.3%</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Prochain Paiement' : 'Next Payment'}</div>
+          <div style={styles.statValue}>20/09</div>
+          <div style={styles.statSubtext}>400€</div>
+        </div>
+      </div>
+
+      <table style={styles.table}>
+        <thead>
+          <tr>
+            <th style={styles.th}>{language === 'fr' ? 'Description' : 'Description'}</th>
+            <th style={styles.th}>{language === 'fr' ? 'Montant' : 'Amount'}</th>
+            <th style={styles.th}>{language === 'fr' ? 'Date' : 'Date'}</th>
+            <th style={styles.th}>{language === 'fr' ? 'Statut' : 'Status'}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {[
+            { desc: language === 'fr' ? '1er Trimestre' : '1st Trimester', amount: '400€', date: '05/09/2025', status: 'paid' },
+            { desc: language === 'fr' ? '2ème Trimestre' : '2nd Trimester', amount: '400€', date: '20/09/2025', status: 'pending' },
+            { desc: language === 'fr' ? 'Cantine (Sept)' : 'Cafeteria (Sept)', amount: '120€', date: '15/09/2025', status: 'paid' }
+          ].map((item, idx) => (
+            <tr key={idx}>
+              <td style={styles.td}>{item.desc}</td>
+              <td style={styles.td}><strong>{item.amount}</strong></td>
+              <td style={styles.td}>{item.date}</td>
+              <td style={styles.td}>
+                <span style={{
+                  ...styles.badge,
+                  ...(item.status === 'paid' ? styles.badgeGreen : styles.badgeYellow)
+                }}>
+                  {item.status === 'paid' ?
+                    (language === 'fr' ? 'Payé' : 'Paid') :
+                    (language === 'fr' ? 'En attente' : 'Pending')}
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+
+  const renderActivitiesReport = () => (
+    <div>
+      <div style={styles.reportTitle}>
+        <Users size={24} />
+        {language === 'fr' ? 'Rapport d\'Activités Extra-scolaires' : 'Extra-curricular Activities Report'}
+      </div>
+
+      <div style={styles.statsGrid}>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Activités Inscrites' : 'Enrolled Activities'}</div>
+          <div style={styles.statValue}>3</div>
+          <div style={styles.statSubtext}>{language === 'fr' ? 'Clubs & Sports' : 'Clubs & Sports'}</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Participation' : 'Participation'}</div>
+          <div style={{...styles.statValue, color: '#059669'}}>88%</div>
+          <div style={styles.statSubtext}>{language === 'fr' ? 'Régulière' : 'Regular'}</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Récompenses' : 'Awards'}</div>
+          <div style={styles.statValue}>2</div>
+          <div style={styles.statSubtext}>{language === 'fr' ? 'Ce trimestre' : 'This term'}</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Heures Service' : 'Service Hours'}</div>
+          <div style={styles.statValue}>12h</div>
+          <div style={styles.statSubtext}>{language === 'fr' ? 'Communauté' : 'Community'}</div>
+        </div>
+      </div>
+
+      <table style={styles.table}>
+        <thead>
+          <tr>
+            <th style={styles.th}>{language === 'fr' ? 'Activité' : 'Activity'}</th>
+            <th style={styles.th}>{language === 'fr' ? 'Type' : 'Type'}</th>
+            <th style={styles.th}>{language === 'fr' ? 'Participation' : 'Attendance'}</th>
+            <th style={styles.th}>{language === 'fr' ? 'Performance' : 'Performance'}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {[
+            { activity: language === 'fr' ? 'Club de Débat' : 'Debate Club', type: 'Club', attendance: '90%', perf: 'excellent' },
+            { activity: language === 'fr' ? 'Basketball' : 'Basketball', type: 'Sport', attendance: '85%', perf: 'good' },
+            { activity: language === 'fr' ? 'Théâtre' : 'Theater', type: 'Arts', attendance: '92%', perf: 'excellent' }
+          ].map((item, idx) => (
+            <tr key={idx}>
+              <td style={styles.td}>{item.activity}</td>
+              <td style={styles.td}>{item.type}</td>
+              <td style={styles.td}>{item.attendance}</td>
+              <td style={styles.td}>
+                <span style={{
+                  ...styles.badge,
+                  ...(item.perf === 'excellent' ? styles.badgeGreen : styles.badgeYellow)
+                }}>
+                  {item.perf === 'excellent' ?
+                    (language === 'fr' ? 'Excellent' : 'Excellent') :
+                    (language === 'fr' ? 'Bon' : 'Good')}
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+
+  const renderComprehensiveReport = () => (
+    <div>
+      <div style={styles.reportTitle}>
+        <Calendar size={24} />
+        {language === 'fr' ? 'Rapport Complet de l\'Année' : 'Comprehensive Year Report'}
+      </div>
+
+      <div style={styles.statsGrid}>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Moyenne Annuelle' : 'Year Average'}</div>
+          <div style={styles.statValue}>13.8/20</div>
+          <div style={styles.statSubtext}>{language === 'fr' ? 'Toutes matières' : 'All subjects'}</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Assiduité Annuelle' : 'Year Attendance'}</div>
+          <div style={{...styles.statValue, color: '#059669'}}>94%</div>
+          <div style={styles.statSubtext}>169/180 {language === 'fr' ? 'jours' : 'days'}</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Rang Général' : 'Overall Rank'}</div>
+          <div style={styles.statValue}>6/35</div>
+          <div style={styles.statSubtext}>Top 20%</div>
+        </div>
+        <div style={styles.statCard}>
+          <div style={styles.statLabel}>{language === 'fr' ? 'Décision' : 'Decision'}</div>
+          <div style={{...styles.statValue, color: '#059669', fontSize: '1.25rem'}}>
+            {language === 'fr' ? 'Admis' : 'Passed'}
+          </div>
+          <div style={styles.statSubtext}>{language === 'fr' ? 'Classe supérieure' : 'Next grade'}</div>
+        </div>
+      </div>
+
+      <div style={{ marginTop: '2rem', padding: '1.5rem', backgroundColor: '#f0f9ff', border: '2px solid #3b82f6', borderRadius: '0.5rem' }}>
+        <div style={{ fontSize: '0.875rem', fontWeight: '600', color: '#1e40af', marginBottom: '1rem' }}>
+          {language === 'fr' ? 'Résumé par Trimestre' : 'Summary by Trimester'}
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+          {[
+            { term: language === 'fr' ? 'Trimestre 1' : 'Trimester 1', avg: 13.2, rank: 7 },
+            { term: language === 'fr' ? 'Trimestre 2' : 'Trimester 2', avg: 13.8, rank: 6 },
+            { term: language === 'fr' ? 'Trimestre 3' : 'Trimester 3', avg: 14.2, rank: 5 }
+          ].map((item, idx) => (
+            <div key={idx} style={{ textAlign: 'center', padding: '1rem', backgroundColor: 'white', borderRadius: '0.375rem' }}>
+              <div style={{ fontSize: '0.875rem', color: '#6b7280', marginBottom: '0.5rem' }}>{item.term}</div>
+              <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1e3a8a' }}>{item.avg}/20</div>
+              <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' }}>
+                {language === 'fr' ? 'Rang:' : 'Rank:'} {item.rank}/35
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ marginTop: '2rem', padding: '1.5rem', backgroundColor: '#f9fafb', borderRadius: '0.5rem' }}>
+        <div style={{ fontSize: '0.875rem', fontWeight: '600', color: '#374151', marginBottom: '0.75rem' }}>
+          {language === 'fr' ? 'Commentaires du Directeur:' : 'Principal\'s Comments:'}
+        </div>
+        <div style={{ fontSize: '0.875rem', color: '#6b7280', fontStyle: 'italic', lineHeight: '1.6' }}>
+          {language === 'fr'
+            ? 'Excellente année scolaire. L\'élève a montré une progression constante et une attitude positive. Recommandé pour la classe supérieure avec félicitations.'
+            : 'Excellent academic year. Student showed consistent improvement and positive attitude. Recommended for next grade with commendations.'}
+        </div>
+      </div>
+    </div>
+  )
+
+  const renderReport = () => {
+    switch (reportType) {
+      case 'academic': return renderAcademicReport()
+      case 'attendance': return renderAttendanceReport()
+      case 'progress': return renderProgressReport()
+      case 'homework': return renderHomeworkReport()
+      case 'exams': return renderExamsReport()
+      case 'financial': return renderFinancialReport()
+      case 'activities': return renderActivitiesReport()
+      case 'comprehensive': return renderComprehensiveReport()
+      default: return renderAcademicReport()
     }
   }
 
   return (
     <div style={styles.container}>
-      {/* Header - No Print */}
+      {/* Header */}
       <div style={styles.header} className="no-print">
         <div style={styles.headerContent}>
           <h1 style={styles.title}>
-            {language === 'fr' ? 'Bulletins de Notes' : 'Report Cards'}
+            {language === 'fr' ? 'Rapports' : 'Reports'}
           </h1>
           <p style={styles.subtitle}>
-            {language === 'fr' ? 'Consultez et imprimez vos bulletins de notes' : 'View and print your report cards'}
+            {language === 'fr'
+              ? 'Consultez vos rapports académiques, de présence et de progrès'
+              : 'View your academic, attendance and progress reports'}
           </p>
         </div>
         <Link to="/" style={styles.backButton}>
@@ -430,246 +797,88 @@ export default function Reports() {
         </Link>
       </div>
 
-      {/* Controls - No Print */}
-      <div style={styles.controls} className="no-print">
-        <div style={styles.filterGroup}>
-          <div>
-            <label style={styles.filterLabel}>
-              {language === 'fr' ? 'Période:' : 'Period:'}
+      {/* Controls */}
+      <div style={styles.controlsCard} className="no-print">
+        {/* Report Type Selector */}
+        <div style={{ marginBottom: '1.5rem' }}>
+          <div style={{ ...styles.label, marginBottom: '0.75rem' }}>
+            {language === 'fr' ? 'Type de Rapport' : 'Report Type'}
+          </div>
+          <div style={styles.reportTypesGrid}>
+            {reportTypes.map((type) => {
+              const Icon = type.icon
+              return (
+                <button
+                  key={type.id}
+                  onClick={() => setReportType(type.id)}
+                  style={{
+                    ...styles.reportTypeButton,
+                    ...(reportType === type.id ? styles.activeReportType : {})
+                  }}
+                >
+                  <Icon size={16} />
+                  {type.label}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Filters */}
+        <div style={styles.controlsGrid}>
+          <div style={styles.filterGroup}>
+            <label style={styles.label}>
+              {language === 'fr' ? 'Période' : 'Period'}
             </label>
-            <select
-              value={selectedPeriod}
-              onChange={(e) => setSelectedPeriod(e.target.value)}
-              style={styles.select}
-            >
+            <select value={period} onChange={(e) => setPeriod(e.target.value)} style={styles.select}>
               <option value="trimester1">{language === 'fr' ? '1er Trimestre' : '1st Trimester'}</option>
               <option value="trimester2">{language === 'fr' ? '2ème Trimestre' : '2nd Trimester'}</option>
               <option value="trimester3">{language === 'fr' ? '3ème Trimestre' : '3rd Trimester'}</option>
               <option value="year">{language === 'fr' ? 'Année Complète' : 'Full Year'}</option>
             </select>
           </div>
-          <div>
-            <label style={styles.filterLabel}>
-              {language === 'fr' ? 'Année scolaire:' : 'School year:'}
+
+          <div style={styles.filterGroup}>
+            <label style={styles.label}>
+              {language === 'fr' ? 'Année Scolaire' : 'School Year'}
             </label>
-            <select
-              value={selectedYear}
-              onChange={(e) => setSelectedYear(e.target.value)}
-              style={styles.select}
-            >
+            <select value={year} onChange={(e) => setYear(e.target.value)} style={styles.select}>
               <option value="2025-2026">2025-2026</option>
               <option value="2024-2025">2024-2025</option>
               <option value="2023-2024">2023-2024</option>
             </select>
           </div>
+
+          {(reportType === 'academic' || reportType === 'progress' || reportType === 'exams') && (
+            <div style={styles.filterGroup}>
+              <label style={styles.label}>
+                {language === 'fr' ? 'Matière' : 'Subject'}
+              </label>
+              <select value={subject} onChange={(e) => setSubject(e.target.value)} style={styles.select}>
+                {subjects.map(subj => (
+                  <option key={subj.id} value={subj.id}>{subj.label}</option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
 
-        <div style={styles.actionButtons}>
-          <button
-            onClick={handlePrint}
-            style={{ ...styles.button, ...styles.primaryButton }}
-          >
-            <Printer style={{ height: '1rem', width: '1rem' }} />
+        {/* Actions */}
+        <div style={styles.actions}>
+          <button onClick={handlePrint} style={{...styles.button, ...styles.primaryButton}}>
+            <Printer size={16} />
             {language === 'fr' ? 'Imprimer' : 'Print'}
           </button>
-          <button
-            onClick={handleDownloadPDF}
-            style={{ ...styles.button, ...styles.secondaryButton }}
-          >
-            <Download style={{ height: '1rem', width: '1rem' }} />
+          <button style={{...styles.button, ...styles.secondaryButton}}>
+            <Download size={16} />
             {language === 'fr' ? 'Télécharger PDF' : 'Download PDF'}
           </button>
         </div>
       </div>
 
-      {/* Report Card */}
+      {/* Report Content */}
       <div style={styles.reportCard} id="printable-report">
-        {/* Report Header */}
-        <div style={styles.reportHeader}>
-          <div style={styles.schoolName}>
-            {language === 'fr' ? 'Collège Jean-Baptiste OBIANG' : 'Jean-Baptiste OBIANG College'}
-          </div>
-          <div style={styles.reportTitle}>
-            {language === 'fr' ? 'Bulletin de Notes' : 'Report Card'} - {getPeriodLabel(selectedPeriod)}
-          </div>
-          <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>
-            {language === 'fr' ? 'Année scolaire:' : 'School year:'} {selectedYear}
-          </div>
-        </div>
-
-        {/* Student Information */}
-        <div style={styles.studentInfo}>
-          <div style={styles.infoItem}>
-            <div style={styles.infoLabel}>{language === 'fr' ? 'Nom de l\'élève' : 'Student name'}</div>
-            <div style={styles.infoValue}>{studentInfo.name}</div>
-          </div>
-          <div style={styles.infoItem}>
-            <div style={styles.infoLabel}>{language === 'fr' ? 'Numéro d\'élève' : 'Student ID'}</div>
-            <div style={styles.infoValue}>{studentInfo.studentId}</div>
-          </div>
-          <div style={styles.infoItem}>
-            <div style={styles.infoLabel}>{language === 'fr' ? 'Classe' : 'Class'}</div>
-            <div style={styles.infoValue}>{studentInfo.class}</div>
-          </div>
-          <div style={styles.infoItem}>
-            <div style={styles.infoLabel}>{language === 'fr' ? 'Année scolaire' : 'Academic year'}</div>
-            <div style={styles.infoValue}>{studentInfo.academicYear}</div>
-          </div>
-        </div>
-
-        {/* Grades Section */}
-        <div style={styles.section}>
-          <h2 style={styles.sectionTitle}>
-            <TrendingUp style={{ height: '1.25rem', width: '1.25rem' }} />
-            {language === 'fr' ? 'Résultats Académiques' : 'Academic Results'}
-          </h2>
-
-          <table style={styles.table}>
-            <thead>
-              <tr>
-                <th style={styles.th}>{language === 'fr' ? 'Matière' : 'Subject'}</th>
-                <th style={{ ...styles.th, ...styles.tdCenter }}>{language === 'fr' ? 'Contrôle 1' : 'Test 1'}</th>
-                <th style={{ ...styles.th, ...styles.tdCenter }}>{language === 'fr' ? 'Contrôle 2' : 'Test 2'}</th>
-                <th style={{ ...styles.th, ...styles.tdCenter }}>{language === 'fr' ? 'Devoirs' : 'Homework'}</th>
-                <th style={{ ...styles.th, ...styles.tdCenter }}>{language === 'fr' ? 'Examen' : 'Exam'}</th>
-                <th style={{ ...styles.th, ...styles.tdCenter }}>{language === 'fr' ? 'Moyenne' : 'Average'}</th>
-                <th style={{ ...styles.th, ...styles.tdCenter }}>{language === 'fr' ? 'Coef.' : 'Coef.'}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {grades.map((grade, index) => (
-                <tr key={index}>
-                  <td style={styles.td}>{grade.subject}</td>
-                  <td style={{ ...styles.td, ...styles.tdCenter }}>{grade.test1.toFixed(1)}</td>
-                  <td style={{ ...styles.td, ...styles.tdCenter }}>{grade.test2.toFixed(1)}</td>
-                  <td style={{ ...styles.td, ...styles.tdCenter }}>{grade.homework.toFixed(1)}</td>
-                  <td style={{ ...styles.td, ...styles.tdCenter }}>{grade.exam.toFixed(1)}</td>
-                  <td style={{ ...styles.td, ...styles.tdCenter, ...getGradeStyle(grade.average) }}>
-                    {grade.average.toFixed(1)}
-                  </td>
-                  <td style={{ ...styles.td, ...styles.tdCenter }}>{grade.coefficient}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          {/* Grade Summary */}
-          <div style={styles.summary}>
-            <div style={styles.summaryItem}>
-              <div style={styles.summaryLabel}>{language === 'fr' ? 'Moyenne Générale' : 'Overall Average'}</div>
-              <div style={styles.summaryValue}>{calculateOverallAverage()} / 20</div>
-            </div>
-            <div style={styles.summaryItem}>
-              <div style={styles.summaryLabel}>{language === 'fr' ? 'Rang' : 'Rank'}</div>
-              <div style={styles.summaryValue}>5 / 35</div>
-            </div>
-            <div style={styles.summaryItem}>
-              <div style={styles.summaryLabel}>{language === 'fr' ? 'Mention' : 'Honors'}</div>
-              <div style={styles.summaryValue}>{language === 'fr' ? 'Bien' : 'Good'}</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Attendance Section */}
-        <div style={styles.section}>
-          <h2 style={styles.sectionTitle}>
-            <Clock style={{ height: '1.25rem', width: '1.25rem' }} />
-            {language === 'fr' ? 'Assiduité et Ponctualité' : 'Attendance and Punctuality'}
-          </h2>
-
-          <div style={styles.statsGrid}>
-            <div style={styles.statBox}>
-              <div style={styles.statLabel}>{language === 'fr' ? 'Total jours' : 'Total days'}</div>
-              <div style={styles.statValue}>{attendanceStats.totalDays}</div>
-            </div>
-            <div style={styles.statBox}>
-              <div style={styles.statLabel}>{language === 'fr' ? 'Présent' : 'Present'}</div>
-              <div style={{ ...styles.statValue, color: '#059669' }}>{attendanceStats.present}</div>
-            </div>
-            <div style={styles.statBox}>
-              <div style={styles.statLabel}>{language === 'fr' ? 'Absent' : 'Absent'}</div>
-              <div style={{ ...styles.statValue, color: '#dc2626' }}>{attendanceStats.absent}</div>
-            </div>
-            <div style={styles.statBox}>
-              <div style={styles.statLabel}>{language === 'fr' ? 'Retards' : 'Late'}</div>
-              <div style={{ ...styles.statValue, color: '#d97706' }}>{attendanceStats.late}</div>
-            </div>
-            <div style={styles.statBox}>
-              <div style={styles.statLabel}>{language === 'fr' ? 'Justifié' : 'Justified'}</div>
-              <div style={styles.statValue}>{attendanceStats.justified}</div>
-            </div>
-            <div style={styles.statBox}>
-              <div style={styles.statLabel}>{language === 'fr' ? 'Non justifié' : 'Unjustified'}</div>
-              <div style={styles.statValue}>{attendanceStats.unjustified}</div>
-            </div>
-          </div>
-
-          <div style={{ padding: '1rem', backgroundColor: '#f0fdf4', borderRadius: '0.5rem', border: '1px solid #22c55e' }}>
-            <div style={{ fontSize: '0.875rem', color: '#166534', fontWeight: '500', marginBottom: '0.5rem' }}>
-              {language === 'fr' ? 'Taux de présence:' : 'Attendance rate:'}
-            </div>
-            <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#166534' }}>
-              {((attendanceStats.present / attendanceStats.totalDays) * 100).toFixed(1)}%
-            </div>
-          </div>
-        </div>
-
-        {/* Comments Section */}
-        <div style={styles.section}>
-          <h2 style={styles.sectionTitle}>
-            <FileText style={{ height: '1.25rem', width: '1.25rem' }} />
-            {language === 'fr' ? 'Appréciations' : 'Comments'}
-          </h2>
-
-          <div style={{ padding: '1rem', backgroundColor: '#f9fafb', borderRadius: '0.5rem', border: '1px solid #e5e7eb' }}>
-            <div style={{ marginBottom: '1rem' }}>
-              <div style={{ fontSize: '0.875rem', fontWeight: '600', color: '#374151', marginBottom: '0.5rem' }}>
-                {language === 'fr' ? 'Professeur principal:' : 'Class teacher:'}
-              </div>
-              <div style={{ fontSize: '0.875rem', color: '#6b7280', fontStyle: 'italic' }}>
-                {language === 'fr'
-                  ? 'Élève sérieuse et appliquée. Continue tes efforts, particulièrement en Histoire-Géographie.'
-                  : 'Serious and diligent student. Keep up the good work, especially in History-Geography.'}
-              </div>
-            </div>
-            <div>
-              <div style={{ fontSize: '0.875rem', fontWeight: '600', color: '#374151', marginBottom: '0.5rem' }}>
-                {language === 'fr' ? 'Directeur:' : 'Principal:'}
-              </div>
-              <div style={{ fontSize: '0.875rem', color: '#6b7280', fontStyle: 'italic' }}>
-                {language === 'fr'
-                  ? 'Bon trimestre. Félicitations pour tes résultats.'
-                  : 'Good trimester. Congratulations on your results.'}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Signatures */}
-        <div style={styles.signature}>
-          <div style={styles.signatureBox}>
-            <div style={styles.signatureLine}>
-              {language === 'fr' ? 'Signature du Professeur Principal' : 'Class Teacher Signature'}
-            </div>
-          </div>
-          <div style={styles.signatureBox}>
-            <div style={styles.signatureLine}>
-              {language === 'fr' ? 'Signature du Directeur' : 'Principal Signature'}
-            </div>
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div style={styles.footer}>
-          <div>
-            {language === 'fr'
-              ? `Document généré le ${new Date().toLocaleDateString('fr-FR')}`
-              : `Document generated on ${new Date().toLocaleDateString('en-US')}`}
-          </div>
-          <div>
-            {language === 'fr' ? 'Page 1/1' : 'Page 1/1'}
-          </div>
-        </div>
+        {renderReport()}
       </div>
     </div>
   )
